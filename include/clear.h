@@ -3,6 +3,6 @@
 #ifndef CLEAR_H
 #define CLEAR_H
 
-void clear_terminal();
+int clear_terminal();
 
 #endif // CLEAR_H

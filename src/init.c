@@ -53,7 +53,12 @@ int main() {
         else {
             printf("Unknown command: %s\n", command);
             }
+
+        if (clear_terminal() == 0) {
+        print_logo();
+    } 
     }
 
     return 0;
 }
+

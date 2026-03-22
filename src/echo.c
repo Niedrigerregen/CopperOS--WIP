@@ -1,4 +1,4 @@
-// echo command - echoes the input back to the terminal 
+// echo command echoes the input back to the terminal 
 
 #include <stdio.h>
 #include <string.h>
