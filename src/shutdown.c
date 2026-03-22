@@ -1,9 +1,8 @@
 //shutdown command. pretty self-explanatory right?
 
-#include <stdio.h>
-#include <stdlib.h>
+#include <sys/reboot.h>
 
 void shutdown_system() {
-    printf("Shutting down CopperOS. Goodbye God!\n");
-    exit(0);
+    printf("please don't let me die, i'm a live OS! Nooooo *vanishes into the void*\n");
+    reboot(RB_POWER_OFF);
 }

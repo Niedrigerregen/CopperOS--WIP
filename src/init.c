@@ -8,6 +8,9 @@
 #include <clear.h>
 #include <echo.h>
 #include <shutdown.h>
+#include <list.h>
+#include <math.h>
+#include <reboot.h> // i don't think i really need all of these headers
 
 void print_logo(void) {
     printf("\n");
@@ -48,6 +51,8 @@ int main() {
             printf("shutdown - shutdown the system\n");
             printf("clear - Clear the terminal screen\n");
             printf("echo - Echoes the input back to the terminal\n");
+            printf("list - List files in the current directory\n");
+            printf("math - Perform basic math operations\n");
             printf("more commands in the future...\n");
             }
         else {
