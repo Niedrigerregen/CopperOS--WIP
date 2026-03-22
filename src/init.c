@@ -42,6 +42,20 @@ int main() {
         if (strncmp(command, "cd ", 3) == 0) {
             change_directory(command + 3);
             continue;
+
+    if (strcmp(command, "clear") == 0) {
+        pid_t pid = fork();
+
+        if (pid == 0) {
+        execlp("clear", "clear", NULL);
+        perror("exec failed");
+        exit(1);}
+         
+        else {
+        wait(NULL);
+        print_logo(); //the non-buggy version of my dream of permanently staying Ascii-logo
+    }
+}
         }
 
     if (strcmp(command, "help") == 0) {
