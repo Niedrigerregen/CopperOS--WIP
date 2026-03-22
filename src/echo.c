@@ -1,8 +1,12 @@
 // echo command echoes the input back to the terminal 
 
 #include <stdio.h>
-#include <string.h>
 
-void echo_command(const char *input) {
-    printf("%s\n", input);
+int main(int argc, char *argv[]) {
+    for (int i = 1; i < argc; i++) {
+        printf("%s", argv[i]);
+        if (i < argc - 1) printf(" ");
+    }
+    printf("\n");
+    return 0;
 }

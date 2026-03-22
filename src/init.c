@@ -1,69 +1,84 @@
 //for the first release, i will just make a really minimal TTY-like terminal like i know from MS-DOS because nobody builds a rocketship after they discovered fire you know?
 //also i heard socrates once said "maybe you're not meant to build a GUI in C. Especially if you just watched a crash course on C programming a few hours ago" 
+// This Code will be PID-1 and at the same time be Shell but i won't name it shell.c because i am the god of this OS and i make the rules here
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
-#include <cd.h>
-#include <clear.h>
-#include <echo.h>
-#include <shutdown.h>
-#include <list.h>
-#include <math.h>
-#include <reboot.h> // i don't think i really need all of these headers
+#include <sys/wait.h>
+#include "cd.h" 
+
+#define MAX_CMD 256 //character limit because memory is now worth gold according to C
+
 
 void print_logo(void) {
     printf("\n");
-    printf("  ____                                  ___  ____\n");
-    printf(" / ___|___  _ __  _ __   ___ _ __      / _ \\/ ___|\n");
-    printf("| |   / _ \\| '_ \\| '_ \\ / _ \\ '__|    | | | \\___ \\\n");
-    printf("| |__| (_) | |_) | |_) |  __/ |       | |_| |___) |\n");
-    printf(" \\____\\___/| .__/| .__/ \\___|_|        \\___/|____/\n");
-    printf("           |_|   |_|\n");
+    printf("   /$$$$$$                                                             /$$$$$$   /$$$$$$ \n");
+    printf("  /$$__  $$                                                           /$$__  $$ /$$__  $$\n");
+    printf(" | $$  \\__/  /$$$$$$   /$$$$$$   /$$$$$$   /$$$$$$   /$$$$$$         | $$  \\ $$| $$  \\__/\n");
+    printf(" | $$       /$$__  $$ /$$__  $$ /$$__  $$ /$$__  $$ /$$__  $$ /$$$$$$| $$  | $$|  $$$$$$ \n");
+    printf(" | $$      | $$  \\ $$| $$  \\ $$| $$  \\ $$| $$$$$$$$| $$  \\__/|______/| $$  | $$ \\____  $$\n");
+    printf(" | $$    $$| $$  | $$| $$  | $$| $$  | $$| $$_____/| $$              | $$  | $$ /$$  \\ $$\n");
+    printf(" |  $$$$$$/|  $$$$$$/| $$$$$$$/| $$$$$$$/|  $$$$$$$| $$              |  $$$$$$/|  $$$$$$/\n");
+    printf("  \\______/  \\______/ | $$____/ | $$____/  \\_______/|__/               \\______/  \\______/ \n");
+    printf("                     | $$      | $$                                                       \n");
+    printf("                     | $$      | $$                                                       \n");
+    printf("                     |__/      |__/                                                       \n");
     printf("\n");
 }
 
-
-// function to initialize the terminal
-void init_terminal() {
-    printf("Welcome to CopperOS!\n");
-    printf("Type 'help' for commands\n");
-}
-
-
 int main() {
-    init_terminal();
+    char command[MAX_CMD];
 
-    // loop to keep the terminal open similar to tkinter's root.mainloop(). why did i tell you that tkinter part? i don't know.
     while (1) {
-        char command[100];
-        printf("$> "); // i don't know if the dollar sign is placed correctly but i have seen it in ubuntu based terminals and it looks cool
-        fgets(command, sizeof(command), stdin);
+        printf("$> ");
+        if (!fgets(command, sizeof(command), stdin)) continue;
 
-        // remove newline character from the end of the command
+        
         command[strcspn(command, "\n")] = 0;
 
-        // help command but it's in the init.c file. but why? because i want to. make me,(the coolest guy ever) change it. 
-        if (strcmp(command, "help") == 0) {
-            printf("Available commands:\n");
-            printf("help - Show this help message\n");
-            printf("cd - Change directory\n");
-            printf("shutdown - shutdown the system\n");
-            printf("clear - Clear the terminal screen\n");
-            printf("echo - Echoes the input back to the terminal\n");
-            printf("list - List files in the current directory\n");
-            printf("math - Perform basic math operations\n");
-            printf("more commands in the future...\n");
-            }
-        else {
-            printf("Unknown command: %s\n", command);
-            }
+        //cd is now built-in instead of being a cool command like echo is - you never stop learning that your logic is completely false while you're mid project 
+        if (strncmp(command, "cd ", 3) == 0) {
+            change_directory(command + 3);
+            continue;
+        }
 
-        if (clear_terminal() == 0) {
-        print_logo();
-    } 
+    if (strcmp(command, "help") == 0) {
+    printf("Available commands:\n");
+    printf("help - Show this cool help message\n");
+    printf("cd - Change directory of a file\n");
+    printf("shutdown - Shutdown the system\n");
+    printf("clear - Clear the terminal screen\n");
+    printf("echo - Echoes the input back to the terminal\n");
+    printf("list - List files in the current directory\n");
+    printf("math - Perform basic math operations\n");
+    printf("more commands in the future...\n");
+    continue;
+}  
+    else {
+    pid_t pid = fork();
+    if (pid == 0) {
+        execlp(command, command, NULL);
+        printf("Unknown command: %s\n", command);
+        exit(1);
+    } else {
+        wait(NULL);
+    }
+}
+        pid_t pid = fork();
+        if (pid == 0) {
+            
+            execlp(command, command, NULL);
+            perror("exec failed");
+            exit(1);
+        } else if (pid > 0) {
+            
+            wait(NULL);
+        } else {
+            perror("fork failed");
+        }
     }
 
     return 0;
 }
-
