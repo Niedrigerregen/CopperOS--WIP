@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int clear_terminal() { // this function now has an int just because i wanted the ascii-logo to loop without a loop! revolutionary!
+int main() {  //somehow, while fixing i just let clear be as it is - i don't know why
     system("clear");
     return 0;
 }
