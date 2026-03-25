@@ -12,19 +12,21 @@ BIN_DIR = $(ROOTFS)/bin
 INIT = $(ROOTFS)/init
 
 INIT_SRC = $(SRC_DIR)/init.c $(SRC_DIR)/cd.c
-COMMAND_SRC := $(filter-out $(INIT_SRC), $(wildcard $(SRC_DIR)/*.c))
+COMMAND_SRC := $(filter-out $(INIT_SRC) $(SRC_DIR)/shell.c, $(wildcard $(SRC_DIR)/*.c))
 COMMANDS := $(notdir $(COMMAND_SRC:.c=))
 
-all: dirs init commands
+all: dirs init commands cpio
+
+cpio:
+	cd $(ROOTFS) && find . | cpio -o -H newc > $(CURDIR)/iso/boot/rootfs.cpio
+	@echo "rootfs.cpio gebaut → $(CURDIR)/iso/boot/rootfs.cpio"
 
 dirs:
 	mkdir -p $(BIN_DIR)
 
-
 init:
 	$(CC) $(CFLAGS_STATIC) $(INIT_SRC) -o $(INIT)
 	@echo "init compiled → $(INIT)"
-
 
 commands:
 	@for srcfile in $(COMMAND_SRC); do \
@@ -33,6 +35,8 @@ commands:
 		if [ $$? -ne 0 ]; then echo "Error compiling $$prog"; exit 1; fi; \
 		echo "$$prog compiled → $(BIN_DIR)/$$prog"; \
 	done
+	$(CC) $(CFLAGS_NORMAL) $(SRC_DIR)/shell.c $(SRC_DIR)/cd.c -o $(BIN_DIR)/shell
+	@echo "shell compiled → $(BIN_DIR)/shell"
 
 clean:
 	rm -rf $(BIN_DIR) $(INIT)

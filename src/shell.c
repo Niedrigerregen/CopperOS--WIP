@@ -9,7 +9,7 @@
 
 #define MAX_CMD 256
 
-void print_logo(void) {
+   void print_logo(void) {
     printf("\n");
     printf("   /$$$$$$                                                             /$$$$$$   /$$$$$$ \n");
     printf("  /$$__  $$                                                           /$$__  $$ /$$__  $$\n");
@@ -25,14 +25,11 @@ void print_logo(void) {
     printf("\n");
 }
 
-
-
-void change_directory(const char *path);
-void print_logo(void);
-
 int main() {
     char command[MAX_CMD];
 
+    print_logo();
+    
     while (1) {
         printf("$> ");
         if (!fgets(command, sizeof(command), stdin))
