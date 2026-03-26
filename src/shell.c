@@ -1,5 +1,3 @@
-//newly added shell as it turned to be a not-so-great idea to set init = shell (basically it eternally stays in the Kernel boot logs)
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -48,7 +46,7 @@ int main() {
         if (strcmp(command, "clear") == 0) {
             pid_t pid = fork();
             if (pid == 0) {
-                execlp("clear", "clear", NULL);
+                execl("/bin/clear", "clear", NULL);
                 perror("exec failed");
                 exit(1);
             } else if (pid > 0) {
@@ -63,7 +61,7 @@ int main() {
         if (strcmp(command, "help") == 0) {
     printf("Available commands:\n");
     printf("help - Show this cool help message\n");
-    printf("cd - Change directory of a file\n");
+    printf("cd - Change directory\n"); // not really effective in a live OS but it can stay for when i turn it into an ... on demand OS?
     printf("shutdown - Shutdown the system\n");
     printf("clear - Clear the terminal screen\n");
     printf("echo - Echoes the input back to the terminal\n");
@@ -76,10 +74,10 @@ int main() {
         pid_t pid = fork();
 
         if (pid == 0) {
-        char *args[] = {"/bin/sh", "-c", command, NULL};
+        char *args[] = {"/bin/shell", "-c", command, NULL};
         execvp(args[0], args);
         perror("exec failed");
-        _exit(1);
+        _exit(1); //i don't think _exit(1) is necessary anymore as the shell is not in the init anymore but i'll let it stay because it makes me look competent
 
 }       else if (pid > 0) {
         wait(NULL);
