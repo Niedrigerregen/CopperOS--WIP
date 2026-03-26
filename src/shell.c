@@ -7,7 +7,8 @@
 
 #define MAX_CMD 256
 
-   void print_logo(void) {
+   void print_logo_content(void) {
+
     printf("\n");
     printf("   /$$$$$$                                                             /$$$$$$   /$$$$$$ \n");
     printf("  /$$__  $$                                                           /$$__  $$ /$$__  $$\n");
@@ -21,6 +22,20 @@
     printf("                     | $$      | $$                                                       \n");
     printf("                     |__/      |__/                                                       \n");
     printf("\n");
+}
+
+    void print_logo(void) {
+
+    static int firstTime = 1; // basically all these new additions are just to fix the logo printing after every command and literally forgetting the command
+
+     if (firstTime) {
+        firstTime = 0;
+        print_logo_content();            
+    } 
+}
+
+void print_logo_force(void) {
+    print_logo_content();
 }
 
 int main() {
@@ -51,7 +66,7 @@ int main() {
                 exit(1);
             } else if (pid > 0) {
                 wait(NULL);
-                print_logo();
+                print_logo_force();
             } else {
                 perror("fork failed");
             }
@@ -71,19 +86,29 @@ int main() {
     continue;
 } 
 
-        pid_t pid = fork();
+char *args[MAX_CMD];
+char cmd_copy[MAX_CMD];                                
+strncpy(cmd_copy, command, MAX_CMD);           
+                                                  
+int i = 0;                                  
+args[i] = strtok(cmd_copy, " ");
+while (args[i] != NULL) {
+    args[++i] = strtok(NULL, " ");
+}
 
-        if (pid == 0) {
-        char *args[] = {"/bin/shell", "-c", command, NULL};
-        execvp(args[0], args);
-        perror("exec failed");
-        _exit(1); //i don't think _exit(1) is necessary anymore as the shell is not in the init anymore but i'll let it stay because it makes me look competent
+char bin_path[MAX_CMD];
+snprintf(bin_path, sizeof(bin_path), "/bin/%s", args[0]); 
+args[0] = bin_path;
 
-}       else if (pid > 0) {
-        wait(NULL);
-
-}       else {
-        perror("fork failed");
+pid_t pid = fork();
+if (pid == 0) {
+    execvp(bin_path, args);
+    perror("exec failed");
+    _exit(1);
+} else if (pid > 0) {
+    wait(NULL);
+} else {
+    perror("fork failed");
 }
     }
 
