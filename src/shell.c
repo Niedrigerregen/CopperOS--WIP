@@ -6,27 +6,28 @@
 #include "cd.h"
 
 #define MAX_CMD 256
+#define ANSI_ORNG "\033[38;5;202m" // turns the Logo orange because it looks cooler. I was lying. It turns everything orange. Not planning on fixing that
 
    void print_logo_content(void) {
 
     printf("\n");
-    printf("   /$$$$$$                                                             /$$$$$$   /$$$$$$ \n");
-    printf("  /$$__  $$                                                           /$$__  $$ /$$__  $$\n");
-    printf(" | $$  \\__/  /$$$$$$   /$$$$$$   /$$$$$$   /$$$$$$   /$$$$$$         | $$  \\ $$| $$  \\__/\n");
-    printf(" | $$       /$$__  $$ /$$__  $$ /$$__  $$ /$$__  $$ /$$__  $$ /$$$$$$| $$  | $$|  $$$$$$ \n");
-    printf(" | $$      | $$  \\ $$| $$  \\ $$| $$  \\ $$| $$$$$$$$| $$  \\__/|______/| $$  | $$ \\____  $$\n");
-    printf(" | $$    $$| $$  | $$| $$  | $$| $$  | $$| $$_____/| $$              | $$  | $$ /$$  \\ $$\n");
-    printf(" |  $$$$$$/|  $$$$$$/| $$$$$$$/| $$$$$$$/|  $$$$$$$| $$              |  $$$$$$/|  $$$$$$/\n");
-    printf("  \\______/  \\______/ | $$____/ | $$____/  \\_______/|__/               \\______/  \\______/ \n");
-    printf("                     | $$      | $$                                                       \n");
-    printf("                     | $$      | $$                                                       \n");
-    printf("                     |__/      |__/                                                       \n");
+    printf( ANSI_ORNG"   /$$$$$$                                                             /$$$$$$   /$$$$$$ \n");
+    printf( ANSI_ORNG"  /$$__  $$                                                           /$$__  $$ /$$__  $$\n");
+    printf( ANSI_ORNG" | $$  \\__/  /$$$$$$   /$$$$$$   /$$$$$$   /$$$$$$   /$$$$$$         | $$  \\ $$| $$  \\__/\n");
+    printf( ANSI_ORNG" | $$       /$$__  $$ /$$__  $$ /$$__  $$ /$$__  $$ /$$__  $$ /$$$$$$| $$  | $$|  $$$$$$ \n");
+    printf( ANSI_ORNG" | $$      | $$  \\ $$| $$  \\ $$| $$  \\ $$| $$$$$$$$| $$  \\__/|______/| $$  | $$ \\____  $$\n");
+    printf( ANSI_ORNG" | $$    $$| $$  | $$| $$  | $$| $$  | $$| $$_____/| $$              | $$  | $$ /$$  \\ $$\n");
+    printf( ANSI_ORNG" |  $$$$$$/|  $$$$$$/| $$$$$$$/| $$$$$$$/|  $$$$$$$| $$              |  $$$$$$/|  $$$$$$/\n");
+    printf( ANSI_ORNG"  \\______/  \\______/ | $$____/ | $$____/  \\_______/|__/               \\______/  \\______/ \n");
+    printf( ANSI_ORNG"                     | $$      | $$                                                       \n");
+    printf( ANSI_ORNG"                     | $$      | $$                                                       \n");
+    printf( ANSI_ORNG"                     |__/      |__/                                                       \n");
     printf("\n");
 }
 
     void print_logo(void) {
 
-    static int firstTime = 1; // basically all these new additions are just to fix the logo printing after every command and literally forgetting the command
+    static int firstTime = 1; // One of the most primitive bugfixing methods there is: A counter. I'm very proud of that
 
      if (firstTime) {
         firstTime = 0;
@@ -82,6 +83,7 @@ int main() {
     printf("echo - Echoes the input back to the terminal\n");
     printf("list - List files in the current directory\n");
     printf("math - Perform basic math operations\n");
+    printf("reboot - reboots your system\n");
     printf("more commands in the future...\n");
     continue;
 } 
