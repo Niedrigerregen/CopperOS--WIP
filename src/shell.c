@@ -36,6 +36,7 @@
 }
 
 void print_logo_force(void) {
+
     print_logo_content();
 }
 
@@ -64,7 +65,7 @@ int main() {
             if (pid == 0) {
                 execl("/bin/clear", "clear", NULL);
                 perror("exec failed");
-                exit(1);
+                _exit(1);
             } else if (pid > 0) {
                 wait(NULL);
                 print_logo_force();

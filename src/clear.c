@@ -1,9 +1,9 @@
-//command that clears the terminal to hide your mess
+// command that clears the terminal to hide your mess
 
 #include <stdio.h>
-#include <stdlib.h>
 
-int main() {  //somehow, while fixing i just let clear be as it is - i don't know why
-    system("clear");
+int main() {
+    printf("\033[H\033[2J\033[3J"); //as i newly discoverd ANSI i'll be featuring iteverywhere possible from now on starting with this escape code
+    fflush(stdout);
     return 0;
 }
