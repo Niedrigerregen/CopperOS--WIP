@@ -9,4 +9,5 @@ xorriso \
 nasm \
 gdb \
 clang \
+musl-tools \
 binutils

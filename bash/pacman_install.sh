@@ -5,4 +5,5 @@ grub \
 xorriso \
 nasm \
 gdb \
+musl \
 clang

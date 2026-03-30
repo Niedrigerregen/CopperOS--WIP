@@ -10,6 +10,7 @@ grub2-tools \
 xorriso \
 nasm \
 gdb \
+musl-gcc \
 clang
 
 #Note: grub is a real gamble with generating an iso so i recommend doing it on an apt system
