@@ -19,9 +19,9 @@ all: dirs init commands cpio
  
 cpio:
 	cd $(ROOTFS) && find . | cpio -o -H newc > $(CURDIR)/iso/boot/rootfs.cpio
-	@echo "rootfs.cpio gebaut → $(CURDIR)/iso/boot/rootfs.cpio"
+	@echo "built rootfs.cpio → $(CURDIR)/iso/boot/rootfs.cpio"
 	rm -rf $(ROOTFS)
-	@echo "rootfs/ aufgeräumt"
+	@echo "cleaned up rootfs"
  
 dirs:
 	mkdir -p $(BIN_DIR)
