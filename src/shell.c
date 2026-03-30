@@ -85,6 +85,8 @@ int main() {
     printf("list - List files in the current directory\n");
     printf("math - Perform basic math operations\n");
     printf("reboot - reboots your system\n");
+    printf("fortune - shows you a random quote from the movie Fight Club\n");
+    printf("date - shows you the current date and time\n");
     printf("more commands in the future...\n");
     continue;
 } 

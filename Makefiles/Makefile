@@ -25,21 +25,25 @@ cpio:
  
 dirs:
 	mkdir -p $(BIN_DIR)
+	mkdir -p $(ROOTFS)/data
 	mkdir -p $(CURDIR)/iso/boot
- 
+	cp $(CURDIR)/data/quotes.txt $(ROOTFS)/data/
+
 init:
 	$(CC) $(CFLAGS_STATIC) $(INIT_SRC) -o $(INIT)
 	@echo "init compiled → $(INIT)"
  
 commands:
-	@for srcfile in $(COMMAND_SRC); do \
+	@for srcfile in $(COMMAND_SRC); \
+	do \
 		prog=$$(basename $$srcfile .c); \
-		$(CC) $(CFLAGS_NORMAL) $$srcfile -o $(BIN_DIR)/$$prog; \
-		if [ $$? -ne 0 ]; then echo "Error compiling $$prog"; exit 1; fi; \
+		$(CC) $(CFLAGS_STATIC) $$srcfile -o $(BIN_DIR)/$$prog; \
+		if [ $$? -ne 0 ]; then echo "Error compiling $$prog"; \
+		exit 1; fi; \
 		echo "$$prog compiled → $(BIN_DIR)/$$prog"; \
 	done
-	$(CC) $(CFLAGS_NORMAL) $(SRC_DIR)/shell.c $(SRC_DIR)/cd.c -o $(BIN_DIR)/shell
+	$(CC) $(CFLAGS_STATIC) $(SRC_DIR)/shell.c $(SRC_DIR)/cd.c -o $(BIN_DIR)/shell
 	@echo "shell compiled → $(BIN_DIR)/shell"
- 
+
 clean:
 	rm -rf $(ROOTFS) $(CURDIR)/iso/boot/rootfs.cpio
