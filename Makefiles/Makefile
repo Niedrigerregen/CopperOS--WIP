@@ -15,19 +15,24 @@ INIT_SRC = $(SRC_DIR)/init.c $(SRC_DIR)/cd.c
 COMMAND_SRC := $(filter-out $(INIT_SRC) $(SRC_DIR)/shell.c, $(wildcard $(SRC_DIR)/*.c))
 COMMANDS := $(notdir $(COMMAND_SRC:.c=))
  
-all: dirs init commands cpio
+all: dirs init commands googler cpio
  
 cpio:
 	cd $(ROOTFS) && find . | cpio -o -H newc > $(CURDIR)/iso/boot/rootfs.cpio
 	@echo "built rootfs.cpio → $(CURDIR)/iso/boot/rootfs.cpio"
 	rm -rf $(ROOTFS)
 	@echo "cleaned up rootfs"
- 
+
+ googler:
+	cp $(CURDIR)/external/googler/googler $(BIN_DIR)/googler
+	chmod +x $(BIN_DIR)/googler
+	@echo "googler installed → $(BIN_DIR)/googler"
+
 dirs:
 	mkdir -p $(BIN_DIR)
 	mkdir -p $(ROOTFS)/data
 	mkdir -p $(CURDIR)/iso/boot
-	cp $(CURDIR)/data/quotes.txt $(ROOTFS)/data/
+	cp $(CURDIR)/data/quotes.txt $(ROOTFS)/data/  // i use the googler repo for my project because i don't want to make my own browser just for this
 
 init:
 	$(CC) $(CFLAGS_STATIC) $(INIT_SRC) -o $(INIT)
