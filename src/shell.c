@@ -79,9 +79,11 @@ int main() {
     printf("Available commands:\n");
     printf("help - Show this cool help message\n");
     printf("cd - Change directory\n"); // not really effective in a live OS but it can stay for when i turn it into an ... on demand OS?
+    printf("ls - List files in the current directory\n");
     printf("shutdown - Shutdown the system\n");
     printf("clear - Clear the terminal screen\n");
     printf("echo - Echoes the input back to the terminal\n");
+    printf("googler - Search Google in TUI\n");
     printf("list - List files in the current directory\n");
     printf("math - Perform basic math operations\n");
     printf("reboot - reboots your system\n");
