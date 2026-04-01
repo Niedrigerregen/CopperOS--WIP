@@ -1,0 +1,102 @@
+/* The search command allows users to visit the legendary World Wide Web
+* by entering either a URL or an alias defined in the aliases.txt file the program will fetch it from the internet and display the text content
+* Aliases are defined in the aliases.txt file in the format: alias=url
+* Under the hood, it's a big boy html to text converter that uses libcurl to perform HTTP requests. R.E.V.O.L.U.T.I.O.N.A.I.R.Y.
+*/
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <curl/curl.h>
+
+#define URL_DB_FILE "/rootfs/data/aliases.txt"
+#define MAX_URL 512
+
+struct Memory {
+    char *data;
+    size_t size;
+};
+
+size_t write_callback(void *ptr, size_t size, size_t nmemb, void *userdata) {
+    size_t total = size * nmemb;
+    struct Memory *mem = (struct Memory *)userdata;
+    char *tmp = realloc(mem->data, mem->size + total + 1);
+    if (!tmp) return 0;
+    mem->data = tmp;
+    memcpy(mem->data + mem->size, ptr, total);
+    mem->size += total;
+    mem->data[mem->size] = 0;
+    return total;
+}
+
+void html_to_text(char *html) {
+    int in_tag = 0;
+    for (size_t i = 0; html[i]; i++) {
+        if (html[i] == '<') in_tag = 1;
+        else if (html[i] == '>') in_tag = 0;
+        else if (!in_tag) putchar(html[i]);
+    }
+}
+
+// Search Alias in the database (aliases.txt)
+int find_alias(const char *input, char *url_out) {
+    FILE *f = fopen(URL_DB_FILE, "r");
+    if (!f) return 0;
+    char line[1024];
+    while (fgets(line, sizeof(line), f)) {
+        // remove trailing newline / carriage return
+        line[strcspn(line, "\r\n")] = 0;
+
+        char *alias = strtok(line, "=");
+        char *url = strtok(NULL, "\n");
+        if (alias && url && strcmp(alias, input) == 0) {
+            strncpy(url_out, url, MAX_URL-1);
+            url_out[MAX_URL-1] = 0;
+            fclose(f);
+            return 1;
+        }
+    }
+    fclose(f);
+    return 0;
+}
+
+int main() {
+    char input[128];
+    char url[MAX_URL];
+
+    printf("Enter site (alias or full URL): ");
+    if (!fgets(input, sizeof(input), stdin)) return 1;
+    input[strcspn(input, "\r\n")] = 0;
+
+    if (!find_alias(input, url)) {
+        strncpy(url, input, MAX_URL-1);
+        url[MAX_URL-1] = 0;
+    }
+
+    CURL *curl = curl_easy_init();
+    if (!curl) {
+        fprintf(stderr, "libcurl init failed\n");
+        return 1;
+    }
+
+    struct Memory mem = {0};
+    curl_easy_setopt(curl, CURLOPT_URL, url);
+    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_callback);
+    curl_easy_setopt(curl, CURLOPT_WRITEDATA, &mem);
+    curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
+    curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 1L);
+
+    CURLcode res = curl_easy_perform(curl);
+    if (res != CURLE_OK) {
+        fprintf(stderr, "curl error: %s\n", curl_easy_strerror(res));
+        free(mem.data);
+        curl_easy_cleanup(curl);
+        return 1;
+    }
+
+    html_to_text(mem.data);
+
+    free(mem.data);
+    curl_easy_cleanup(curl);
+    return 0;
+}
