@@ -47,7 +47,7 @@ commands:
 	done
 	$(CC) $(CFLAGS_STATIC) $(SRC_DIR)/shell.c $(SRC_DIR)/cd.c -o $(BIN_DIR)/shell
 
-ssearch:
+search:
 	$(CC) $(CFLAGS_STATIC) -I/path/to/musl/include \
 		$(SRC_DIR)/search.c -o $(BIN_DIR)/search \
 		-L/path/to/musl/lib -lcurl -lssl -lcrypto -lz -lpthread
