@@ -83,7 +83,7 @@ int main() {
     printf("shutdown - Shutdown the system\n");
     printf("clear - Clear the terminal screen\n");
     printf("echo - Echoes the input back to the terminal\n");
-    printf("googler - Search Google in TUI\n");
+    printf("search - search the web with a URL or an Alias\n");
     printf("list - List files in the current directory\n");
     printf("math - Perform basic math operations\n");
     printf("reboot - reboots your system\n");

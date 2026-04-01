@@ -1,2 +1,2 @@
-cd /home/admin/CopperOS
+cd ~/CopperOS
 make -f Makefiles/Makefile
