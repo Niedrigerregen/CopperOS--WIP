@@ -24,7 +24,7 @@ all: dirs init commands search busybox copy-libs cpio
 
 cpio:
 	cd $(ROOTFS) && find . | cpio -o -H newc > $(CURDIR)/iso/boot/rootfs.cpio
-	rm -rf $(ROOTFS)
+	#rm -rf $(ROOTFS)
 
 dirs:
 	mkdir -p $(BIN_DIR)
@@ -96,4 +96,4 @@ copy-libs:
 	@echo "Library copy complete."
 
 clean:
-	rm -rf $(ROOTFS) $(CURDIR)/iso/boot/rootfs.cpio
+	#rm -rf $(ROOTFS) $(CURDIR)/iso/boot/rootfs.cpio

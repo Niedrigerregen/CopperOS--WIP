@@ -8,22 +8,33 @@
 
 int main() {
 
-    // Set PATH so BusyBox applets that are mainly for the internet connection stuff can find the tools
+    // Set PATH so BusyBox applets can be found
     setenv("PATH", "/bin:/sbin:/usr/bin", 1);
 
-    if (mount("", "/", NULL, MS_REMOUNT, NULL) != 0) { // makes rootfs read-write as per default it's read-only
-        perror("remount / rw failed");
+    // Remount root as read-write - simpler approach
+    mount("proc", "/proc", "proc", 0, NULL);  // Dummy mount to make remount work
+    if (mount("/dev/root", "/", NULL, MS_REMOUNT, NULL) != 0) {
+        // If that fails, try the empty string method
+        if (mount("", "/", NULL, MS_REMOUNT, NULL) != 0) {
+            perror("remount / rw failed (ignoring)");
+        }
     }
 
     sethostname("copperos", 8);
 
-    system("ip link set lo up");           
-    system("ip link set eth0 up 2>/dev/null || ip link set ens3 up 2>/dev/null");
-    system("udhcpc -i eth0 -q -n 2>/dev/null || udhcpc -i ens3 -q -n 2>/dev/null || udhcpc -q -n");
-
+    // Bring up loopback interface
+    system("ifconfig lo up");
+    
+    // Configure ethernet with static IP using ifconfig
+    system("ifconfig eth0 up");
+    system("ifconfig eth0 10.0.2.15 netmask 255.255.255.0");
+    system("route add default gw 10.0.2.2 eth0");
+    
+    // Create resolv.conf with working DNS
     FILE *f = fopen("/etc/resolv.conf","w");
     if(f) {
         fprintf(f,"nameserver 8.8.8.8\n");
+        fprintf(f,"nameserver 1.1.1.1\n");
         fclose(f);
     }
 
