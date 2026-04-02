@@ -1,4 +1,4 @@
-// Gives out a random quote from the Fight Club in quotes.txt because i like RNGs 
+// Gives out a random quote from the Fight Club movie in quotes.txt because i like RNGs 
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -8,7 +8,7 @@ FILE *file;
 char quote[256];
 
 int main() {
-    file = fopen("data/quotes.txt", "r"); //opens the file by looking through the path
+    file = fopen("/data/quotes.txt", "r"); //opens the file by looking through the path
     if (file == NULL) {
         printf("Could not open quotes.txt\n");
         return 1;

@@ -11,6 +11,11 @@ xorriso \
 nasm \
 gdb \
 musl-gcc \
-clang
+clang \
+libcurl-devel \
+openssl-devel \
+zlib-devel \
+pkg-config \
+busybox-static
 
 #Note: grub is a real gamble with generating an iso so i recommend doing it on an apt system

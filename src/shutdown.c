@@ -5,8 +5,8 @@
 #include <unistd.h>
 
 int main(){
-    printf("please don't let me die, i'm a live OS! Nooooo *vanishes into the void*\n");
-    reboot(RB_POWER_OFF);
+    printf("please don't let me die, i live in an emulator! Nooooo *vanishes into the void*\n");
     sync();
+    reboot(RB_POWER_OFF);
     return(0);
 }

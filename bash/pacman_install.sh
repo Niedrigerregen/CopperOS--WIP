@@ -6,4 +6,9 @@ xorriso \
 nasm \
 gdb \
 musl \
-clang
+clang \
+curl \
+openssl \
+zlib \
+pkg-config \
+busybox-static

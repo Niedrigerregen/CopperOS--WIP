@@ -94,17 +94,19 @@ int main() {
 } 
 
 char *args[MAX_CMD];
-char cmd_copy[MAX_CMD];                                
-strncpy(cmd_copy, command, MAX_CMD);           
-                                                  
-int i = 0;                                  
+char cmd_copy[MAX_CMD];
+strncpy(cmd_copy, command, MAX_CMD - 1);
+cmd_copy[MAX_CMD - 1] = '\0';
+
+int i = 0;
 args[i] = strtok(cmd_copy, " ");
 while (args[i] != NULL) {
-    args[++i] = strtok(NULL, " ");
+    i++;
+    args[i] = strtok(NULL, " ");
 }
 
 char bin_path[MAX_CMD];
-snprintf(bin_path, sizeof(bin_path), "/bin/%s", args[0]); 
+snprintf(bin_path, sizeof(bin_path), "/bin/%s", args[0]);
 args[0] = bin_path;
 
 pid_t pid = fork();

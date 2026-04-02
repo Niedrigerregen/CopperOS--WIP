@@ -10,4 +10,9 @@ nasm \
 gdb \
 clang \
 musl-tools \
-binutils
+binutils \
+libcurl4-openssl-dev \
+libssl-dev \
+zlib1g-dev \
+pkg-config \
+busybox-static

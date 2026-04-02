@@ -8,15 +8,18 @@
 
 int main() {
 
-    if (mount(NULL, "/", NULL, MS_REMOUNT, NULL) != 0) { // makes rootfs read-write as per default it's read-only
+    // Set PATH so BusyBox applets that are mainly for the internet connection stuff can find the tools
+    setenv("PATH", "/bin:/sbin:/usr/bin", 1);
+
+    if (mount("", "/", NULL, MS_REMOUNT, NULL) != 0) { // makes rootfs read-write as per default it's read-only
         perror("remount / rw failed");
     }
 
     sethostname("copperos", 8);
 
     system("ip link set lo up");           
-    system("ip link set eth0 up"); // configure network interface. Currently only works with an ethernet connection. If you use Wi-Fi then suffer (for now)   
-    system("udhcpc -i eth0 -q -n");    
+    system("ip link set eth0 up 2>/dev/null || ip link set ens3 up 2>/dev/null");
+    system("udhcpc -i eth0 -q -n 2>/dev/null || udhcpc -i ens3 -q -n 2>/dev/null || udhcpc -q -n");
 
     FILE *f = fopen("/etc/resolv.conf","w");
     if(f) {
@@ -35,6 +38,8 @@ int main() {
     dup2(fd, 2); // stderr
     if (fd > 2) close(fd);
 
+    setenv("LD_LIBRARY_PATH", "/lib", 1);
+
     execl("/bin/shell", "shell", NULL);
 
     
@@ -46,4 +51,4 @@ int main() {
 * a fail is most of a time an error by 
 * me in the code so it's a loop 
 * one way or another
-*/  
+*/

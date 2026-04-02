@@ -9,7 +9,7 @@
 #include <string.h>
 #include <curl/curl.h>
 
-#define URL_DB_FILE "/rootfs/data/aliases.txt"
+#define URL_DB_FILE "/data/aliases.txt" // removed the rootfs before /data/ as it gets deleted after build so you get a "no such file or directory"
 #define MAX_URL 512
 
 struct Memory {
