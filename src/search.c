@@ -9,7 +9,7 @@
 #include <string.h>
 #include <curl/curl.h>
 
-#define URL_DB_FILE "/data/aliases.txt" // removed the rootfs before /data/ as it gets deleted after build so you get a "no such file or directory"
+#define URL_DB_FILE "/data/aliases.txt"
 #define MAX_URL 512
 
 struct Memory {
@@ -60,15 +60,23 @@ int find_alias(const char *input, char *url_out) {
     return 0;
 }
 
-int main() {
+int main(int argc, char *argv[]) {
     char input[128];
     char url[MAX_URL];
 
-    printf("Enter site (alias or full URL): ");
-    if (!fgets(input, sizeof(input), stdin)) return 1;
-    input[strcspn(input, "\r\n")] = 0;
+    if (argc > 1) {
+        // Use command line argument
+        strncpy(input, argv[1], sizeof(input) - 1);
+        input[sizeof(input) - 1] = '\0';
+    } else {
+        // Prompt for input
+        printf("Enter site (alias or full URL): ");
+        if (!fgets(input, sizeof(input), stdin)) return 1;
+        input[strcspn(input, "\r\n")] = 0;
+    }
 
     if (!find_alias(input, url)) {
+        // If not an alias, assume it's a URL
         strncpy(url, input, MAX_URL-1);
         url[MAX_URL-1] = 0;
     }
@@ -84,7 +92,8 @@ int main() {
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_callback);
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, &mem);
     curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
-    curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 1L);
+    curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);  // Disable SSL cert verification
+    curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0L);  // Disable hostname verification
 
     CURLcode res = curl_easy_perform(curl);
     if (res != CURLE_OK) {
