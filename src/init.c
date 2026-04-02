@@ -11,10 +11,9 @@ int main() {
     // Set PATH so BusyBox applets can be found
     setenv("PATH", "/bin:/sbin:/usr/bin", 1);
 
-    // Remount root as read-write - simpler approach
-    mount("proc", "/proc", "proc", 0, NULL);  // Dummy mount to make remount work
+    // Remount root as read-write
+    mount("proc", "/proc", "proc", 0, NULL);
     if (mount("/dev/root", "/", NULL, MS_REMOUNT, NULL) != 0) {
-        // If that fails, try the empty string method
         if (mount("", "/", NULL, MS_REMOUNT, NULL) != 0) {
             perror("remount / rw failed (ignoring)");
         }
@@ -22,15 +21,14 @@ int main() {
 
     sethostname("copperos", 8);
 
-    // Bring up loopback interface
     system("ifconfig lo up");
     
     // Configure ethernet with static IP using ifconfig
     system("ifconfig eth0 up");
-    system("ifconfig eth0 10.0.2.15 netmask 255.255.255.0");
-    system("route add default gw 10.0.2.2 eth0");
+    system("ifconfig eth0 10.0.2.15 netmask 255.255.255.0"); //hey! this one actually works without ethernet and i don't know why! No really i don't know how and i'm scared
+    system("route add default gw 10.0.2.2 eth0"); // i found out now. QEMU is just giving out it's own IP so nothing of this would actually work on hardware but idc
     
-    // Create resolv.conf with working DNS
+
     FILE *f = fopen("/etc/resolv.conf","w");
     if(f) {
         fprintf(f,"nameserver 8.8.8.8\n");
@@ -62,4 +60,6 @@ int main() {
 * a fail is most of a time an error by 
 * me in the code so it's a loop 
 * one way or another
+* well okay also if shell dies, everything dies but something
+* like this doesn't happen in Qemu so i don't care
 */
