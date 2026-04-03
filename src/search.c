@@ -34,6 +34,7 @@ size_t write_callback(void *ptr, size_t size, size_t nmemb, void *userdata) {
     return total;
 }
 
+//converts html to text by destroying everything between < and >. It has some bugs especially with style tags but whatever
 void html_to_text(char *html) {
     int in_tag = 0;
     for (size_t i = 0; html[i]; i++) {
