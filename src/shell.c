@@ -89,6 +89,7 @@ int main() {
     printf("reboot - reboots your system\n");
     printf("fortune - shows you a random quote from the movie Fight Club\n");
     printf("date - shows you the current date and time\n");
+    printf("tellmeafact - tells you exactly one fact");
     printf("more commands in the future...\n");
     continue;
 } 
