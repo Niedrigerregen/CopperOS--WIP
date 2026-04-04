@@ -1,16 +1,18 @@
 # CopperOS
 I wanted to understand operating systems, so I (the coolest guy ever) started building one.
 
-![demo]<img width="1920" height="1028" alt="CopperOS_v 0 2 0" src="https://github.com/user-attachments/assets/15689647-9061-446f-b5d0-22342076819b" />
+<img width="1865" height="1012" alt="CopperOS_v 1 0 0" src="https://github.com/user-attachments/assets/f3fe0f31-f76f-48ba-b66e-15df48babc3f" />
+
 
 ## What makes it Special?
-It's very similar to MS-DOS as it's just a custom shell OS but with the feature of a built-in search engine
+From the graphics perspective it's very similar to MS-DOS as it's just a custom shell OS but with the feature of a built-in search engine which under the hood is an html to text converter but it still searches so don't underrate my work
 
 ## Current stand 
-Right now as it's still in beta it isn't really special with some commands and an Ascii logo but as soon as i add internet connection, the first full release will be out too
+Right now it can "browse" the world wide web by using the IP of the QEMU and is equipped with various commands. Under the hood the "browsing" is just an HTTP request for the html file, then an html to text converter converts into text but don't 
+browsers like Chrome do a similar method?
 
 # How to install/run
-First you'll need to clone this repository into your system by pasting this command in your terminal: `git clone https://github.com/Niedrigerregen/CopperOS.git`
+First you'll need to clone this repository into your system by pasting this command into your terminal: `git clone https://github.com/Niedrigerregen/CopperOS.git`
 
 After that you'll need to open the Folder in your Terminal with `cd CopperOS` and install the requiered packages
 
@@ -32,9 +34,5 @@ There already are .iso images in the releases but if you want to generate your o
 This is also pretty easy with `bash bash/run.sh` which runs the OS in the terminal. Now you're finished!
 
 ## Future
-At this point i am customizing the OS right now but in the future i will somehow build a connection with the internet with the linux kernel and from that point on i will
-
-- Make my own package Manager and repo with fully TUI programs
-- Add a search engine with the "search" command (possibly without an API key like DuckDuckGo's)
-- Add a shortcut to any wikipedia page with the "wiki" command
-- Make a built-in USB Image Writer just for fun
+- Make my own package Manager and repo with fully TUI programs (needs a server and do i look like i got money for servers? I am doing everything on an intel i5 of 3rd gen man that chip is almost older than me)
+- debug. a lot. especially internet stuff.
