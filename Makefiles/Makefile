@@ -50,29 +50,28 @@ commands:
 	done
 	$(CC) $(CFLAGS_STATIC) $(SRC_DIR)/shell.c $(SRC_DIR)/cd.c -o $(BIN_DIR)/shell
 
-# BusyBox provides ip, udhcpc, and other networking tools that i am too dumb to implement myself
+# Use the prebuilt BusyBox from tools
 busybox:
-	@echo "Adding BusyBox..."
-	@BUSYBOX_PATH=$$(command -v busybox 2>/dev/null || echo ""); \
-	if [ -z "$$BUSYBOX_PATH" ]; then \
-		echo "Error: busybox not found in PATH. Please install busybox-static."; \
+	@echo "Using prebuilt BusyBox from tools/"
+	@if [ ! -f $(CURDIR)/tools/busybox ]; then \
+		echo "Error: tools/busybox not found. Please ensure the custom BusyBox is present."; \
 		exit 1; \
-	fi; \
-	echo "Found busybox at $$BUSYBOX_PATH"; \
-	cp "$$BUSYBOX_PATH" $(BIN_DIR)/busybox
+	fi
+	cp $(CURDIR)/tools/busybox $(BIN_DIR)/busybox
 	@# Create symlinks for the commands needed
 	@ln -sf busybox $(BIN_DIR)/ip
 	@ln -sf busybox $(BIN_DIR)/udhcpc
 	@ln -sf busybox $(BIN_DIR)/ifconfig
 	@ln -sf busybox $(BIN_DIR)/route
+	@ln -sf busybox $(BIN_DIR)/sh
+	@ln -sf busybox $(BIN_DIR)/ash
 	@echo "BusyBox added."
 
-# first time linking dynamically in an Operating System - kinda nervous https://tropedia.fandom.com/wiki/Shy_Finger-Twiddling
+# first time linking dynamically - kinda nervous
 search:
 	gcc -O2 -s -I$(CURDIR)/include $(SRC_DIR)/search.c -o $(BIN_DIR)/search -lcurl
 
 # Grab all the .so files search needs and dump them into rootfs/lib
-# Also copy the dynamic linker to the location the binary expects (lib64)
 copy-libs:
 	@echo "Copying dynamic libraries for search..."
 	@mkdir -p $(ROOTFS)/lib
@@ -83,7 +82,7 @@ copy-libs:
 			cp "$$lib" $(ROOTFS)/lib/; \
 		fi \
 	done
-	@# Copy dynamic linker to the location the binary expects (lib64)
+	@# Copy dynamic linker
 	@if [ -f /lib64/ld-linux-x86-64.so.2 ]; then \
 		echo "  Copying /lib64/ld-linux-x86-64.so.2 to lib64/"; \
 		cp /lib64/ld-linux-x86-64.so.2 $(ROOTFS)/lib64/; \
