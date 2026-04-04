@@ -24,8 +24,37 @@ numbers-story/mis=https://numbersstory.com/misc
 
 wikipedia=https://en.wikipedia.org/wiki/Main_Page
 Wikipedia=https://en.wikipedia.org/wiki/Main_Page
+wiki=https://en.wikipedia.org/wiki/Main_Page
+Wiki=https://en.wikipedia.org/wiki/Main_Page
 wikipedia-linux=https://en.wikipedia.org/wiki/Linux
 Wikipedia-linux=https://en.wikipedia.org/wiki/Linux
 wikipedia-copper=https://en.wikipedia.org/wiki/Copper
 Wikipedia-copper=https://en.wikipedia.org/wiki/Copper
 
+arxiv-cs=https://arxiv.org/list/cs/recent
+arxiv-math=https://arxiv.org/list/math/recent
+pubmed-articles=https://pubmed.ncbi.nlm.nih.gov/?term=recent
+stanford-cs-courses=https://cs.stanford.edu/courses/
+mit-ocw-courses=https://ocw.mit.edu/courses/most-recent/
+
+bbc-article=https://www.bbc.com/news/world-66707227
+theguardian-article=https://www.theguardian.com/science/2026/mar/31/
+reuters-article=https://www.reuters.com/technology/
+
+devdocs-js=https://devdocs.io/javascript/
+devdocs-python=https://devdocs.io/python/
+github-trending-python=https://github.com/trending/python
+
+gutenberg-books=https://www.gutenberg.org/ebooks/search/?sort_order=downloads
+poetryfoundation-poems=https://www.poetryfoundation.org/poems/browse#page=1
+openlibrary-texts=https://openlibrary.org/subjects/science_fiction
+wikibooks-cookbook=https://en.wikibooks.org/wiki/Cookbook
+
+arxiv-cs=https://arxiv.org/list/cs/recent
+arxiv-math=https://arxiv.org/list/math/recent
+pubmed-articles=https://pubmed.ncbi.nlm.nih.gov/?term=recent
+stanford-cs-courses=https://cs.stanford.edu/courses/
+mit-ocw-courses=https://ocw.mit.edu/courses/most-recent/
+
+guthib=http://guthib.com
+test=https://www.example.com
