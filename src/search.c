@@ -34,13 +34,20 @@ size_t write_callback(void *ptr, size_t size, size_t nmemb, void *userdata) {
     return total;
 }
 
-//converts html to text by destroying everything between < and >. It has some bugs especially with style tags but whatever
+//converts html to text by destroying everything between html tags and styling stuff for more readability
 void html_to_text(char *html) {
     int in_tag = 0;
+    int in_braces = 0;
+    int in_brackets = 0;
     for (size_t i = 0; html[i]; i++) {
         if (html[i] == '<') in_tag = 1;
         else if (html[i] == '>') in_tag = 0;
-        else if (!in_tag) putchar(html[i]);
+        else if (html[i] == '{') in_braces = 1;
+        else if (html[i] == '}') in_braces = 0;
+        else if (!in_tag && !in_braces) putchar(html[i]);
+        else if (html[i] == '\n' && in_tag) putchar('\n'); // add newlines for block elements
+        else if (html[i] == '[') in_brackets = 1;
+        else if (html[i] == ']') in_brackets = 0;
     }
 }
 
